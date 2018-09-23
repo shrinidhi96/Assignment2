@@ -1,9 +1,11 @@
 package packageQueue;
 
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
 public class QueueADT {
+	static int queueSize;
 	
 	public static class myQueue
 	{
@@ -89,7 +91,7 @@ public class QueueADT {
 		
 		
 	}
-	static myQueue queue = new myQueue(5);
+	static myQueue queue; 
 	static Semaphore semaphore = new Semaphore(2);
 	public static class ProducerConsumer extends Thread
 	{
@@ -108,10 +110,11 @@ public class QueueADT {
 					int i = 0;
 					semaphore.acquire();
 					System.out.println("Semaphore Acquired by Producer!");
-					/*if(queue.isFull())
+					Thread.sleep(2000);
+					if(queue.isFull())
 					{
 						Thread.sleep(5000);
-					}*/
+					}
 					Random random = new Random();
 					for(i=0;i<queue.maxQueueSize;i++)
 					{
@@ -137,6 +140,7 @@ public class QueueADT {
 					int i = 0;
 					semaphore.acquire();
 					System.out.println("Semaphore Acquired by Consumer!");
+					Thread.sleep(2000);
 					if(queue.isEmpty())
 					{
 						Thread.sleep(3000);
@@ -163,6 +167,12 @@ public class QueueADT {
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub
+		
+		System.out.println("Enter the maximum queue size : ");
+		Scanner sc = new Scanner(System.in);
+		queueSize = sc.nextInt();
+		queue = new myQueue(queueSize);
+		sc.close();
 		ProducerConsumer producer = new ProducerConsumer("P");
 		producer.start();
 		
